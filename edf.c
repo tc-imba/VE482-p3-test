@@ -18,7 +18,7 @@ clock_t start;
 void sigint_cb(int signal)
 {
     exitflag = 1;
-    printf("pid:%d\tticket:%d\ttime:%lu\n", getpid(), deadline, clock() - start);
+    printf("pid:%d\tdeadline:%d\ttime:%lu\n", getpid(), deadline, clock() - start);
 }
 
 int main(int argc, char *argv[])
@@ -36,6 +36,8 @@ int main(int argc, char *argv[])
     {
         if (counter++ == INT_MAX) break;
     }
+
+    sigint_cb(0);
 
 
 }
