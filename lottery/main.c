@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     pid = fork();
     if (!pid)
     {
-        nice(ticket = 10);
+        nice(ticket = 4);
     }
 
     signal(SIGINT, sigint_cb);
