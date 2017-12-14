@@ -4,24 +4,49 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <time.h>
 #include <stdio.h>
+#include <signal.h>
 
-long fibonacci(unsigned n) {
-    if (n < 2) return n;
-    return fibonacci(n - 1) + fibonacci(n - 2);
+const int SIZE = 8;
+const int tickets[] = {0, 0, 0, 0, 2, 4, 6, 8};
+
+int ticket = 1;
+int exitflag = 0;
+pid_t pid = 0;
+size_t counter = 0;
+
+void sigint_cb(int signal)
+{
+    exitflag = 1;
+    if (!pid)
+    {
+        printf("pid:%d\tticket:%d\tcounter:%lu\n", getpid(), ticket, counter);
+    }
 }
 
-int main(int argc, char *argv[]) {
-    int priority = -1;
-    if (argc > 1) {
-        priority = strtol(argv[1], NULL, 10);
-        nice(priority);
+int main(int argc, char *argv[])
+{
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        pid = fork();
+        if (!pid)
+        {
+            if (tickets[i] > 0)
+            {
+                nice(ticket = tickets[i]);
+            }
+            break;
+        }
     }
-    long start = clock();
-    printf("f(42) = %ld\n", fibonacci(42));
-    long end = clock();
-    printf("pid: %d\n", getpid());
-    printf("priority: %d\n", priority);
-    printf("elapsed time: %lfs\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+    signal(SIGINT, sigint_cb);
+
+
+    while (!exitflag)
+    {
+        if (!pid) counter++;
+    }
+
+
 }
