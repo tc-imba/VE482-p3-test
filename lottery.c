@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     pid = fork();
     if (pid)
     {
-        nice(deadline = 2);
+        nice(deadline = nice_val);
     }
 
     signal(SIGINT, sigint_cb);
