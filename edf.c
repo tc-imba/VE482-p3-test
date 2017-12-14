@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
     if (pid)
     {
         nice(deadline = 2000);
+    } else {
+        nice(deadline = 1000);
     }
 
     signal(SIGINT, sigint_cb);
