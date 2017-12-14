@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
         pid = fork();
         if (!pid)
         {
+            sleep(10);
             if (tickets[i] > 0)
             {
                 nice(ticket = tickets[i]);
@@ -41,7 +42,6 @@ int main(int argc, char *argv[])
     }
 
     signal(SIGINT, sigint_cb);
-
 
     while (!exitflag)
     {
