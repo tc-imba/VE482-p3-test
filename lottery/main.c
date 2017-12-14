@@ -10,7 +10,7 @@
 int ticket = 1;
 int exitflag = 0;
 pid_t pid = 0;
-size_t counter = 0;
+unsigned long long counter = 0;
 
 void sigint_cb(int signal)
 {
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     pid = fork();
     if (pid)
     {
-        nice(ticket = 10);
+        nice(ticket = 2);
     }
 
     signal(SIGINT, sigint_cb);
