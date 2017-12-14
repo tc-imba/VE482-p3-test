@@ -7,8 +7,9 @@
 #include <stdio.h>
 #include <signal.h>
 #include <time.h>
+#include <limits.h>
 
-int ticket = 1;
+int deadline = 0;
 int exitflag = 0;
 pid_t pid = 0;
 unsigned long counter = 0;
@@ -17,7 +18,7 @@ clock_t start;
 void sigint_cb(int signal)
 {
     exitflag = 1;
-    printf("pid:%d\tticket:%d\ttime:%lu\n", getpid(), ticket, clock() - start);
+    printf("pid:%d\tticket:%d\ttime:%lu\n", getpid(), deadline, clock() - start);
 }
 
 int main(int argc, char *argv[])
@@ -26,14 +27,14 @@ int main(int argc, char *argv[])
     pid = fork();
     if (pid)
     {
-        nice(ticket = 2);
+        nice(deadline = 2000);
     }
 
     signal(SIGINT, sigint_cb);
 
     while (!exitflag)
     {
-        counter++;
+        if (counter++ == INT_MAX) break;
     }
 
 
