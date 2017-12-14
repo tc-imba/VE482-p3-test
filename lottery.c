@@ -22,6 +22,15 @@ void sigint_cb(int signal)
 
 int main(int argc, char *argv[])
 {
+    int nice_val;
+    if (argc > 1)
+    {
+        nice_val = strtol(argv[1], NULL, 10);
+    }
+    if (nice_val < 2)
+    {
+        nice_val = 2;
+    }
     start = clock();
     pid = fork();
     if (pid)
